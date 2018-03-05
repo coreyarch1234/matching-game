@@ -1,28 +1,30 @@
-.App {
-  text-align: center;
+.board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 80%;
+  margin: auto;
+  grid-gap: 10px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.card {
+   width: 200px;
+   height: 280px;
+   background: #CCC5B3;
+   margin: 100px auto;
+   border-radius: 12px;
+   -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.25);
+   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.25);
+   position: relative;
+   overflow: hidden;
+   color: white;
+   -webkit-animation: fadeInCard 0.6s forwards;
+   animation: fadeInCard 0.6s forwards;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.card h1 {
+  font-size: 20px !important;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.card h2 {
+  font-size: 18px !important;
 }
