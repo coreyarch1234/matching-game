@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Card from 'react-playing-card';
+
 //display 52 cards using css grid
 export default class Board extends Component {
   constructor(props) {
@@ -11,15 +12,18 @@ export default class Board extends Component {
       const key = `${cardObject.rank}${cardObject.suit} `;
       const rank = cardObject.rank;
       const suit = cardObject.suit;
+      const className = cardObject.className;
+
+      // className='hideCard'
 
       // rank and suit are keys here
       return (
-        <div key={key} onClick={(e) => {
-          console.log("CLICK DAMN YOU!!!!")
-          console.log(rank, suit)
-          this.props.onClick(rank, suit)
+        <div className={className} key={key} onClick={(e) => {
+          console.log("CLICK WORKED!!!!");
+          console.log(rank, suit);
+          this.props.onClick(rank, suit);
         }}>
-        <Card {...cardObject}  />
+        <Card {...cardObject} />
       </div>)
     });
   }
