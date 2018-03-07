@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from './board';
+
 //Hold an array of 52 card objects
 export default class Game extends Component {
   constructor(props){
@@ -11,69 +12,94 @@ export default class Game extends Component {
     }
   }
 
-  removeMatched(rank, suitOne, suitTwo) {
-    // hide those cards on board
-    //add to matched array
-    console.log(`remove matched`);
+  // hide cards from board and add them to matchedCards
+  hideAndAddMatched(rank, suitOne, suitTwo) {
+
     const newCards = this.state.cards.filter((cardObject, index) => {
       const cardRank = cardObject.rank;
       const cardSuit = cardObject.suit;
+      //first card of matched pair found
       if (cardRank === rank && cardSuit === suitOne){
+        // hide card with css
         cardObject.className = 'hideCard';
-        console.log(`we are hiding card, ${rank} ${suitOne}`);
-        return cardObject;
-      }else if (cardRank === rank && cardSuit === suitTwo){
-        cardObject.className = 'hideCard';
-        console.log(`we are hiding card, ${rank} ${suitTwo}`);
         return cardObject;
       }
-      else{
+      if (cardRank === rank && cardSuit === suitTwo){
+        // hide card with css
+        cardObject.className = 'hideCard';
         return cardObject;
       }
+      return cardObject;
     });
-    this.setState({cards: newCards, firstPick: null});
-  }
-  clickCard(rank, suit) {
-    console.log(`first pick is now: ${this.state.firstPick === null ? this.state.firstPick : this.state.firstPick.rank}`);
 
+    const matchedPair = {
+      cardOne: { rank: rank, suit: suitOne },
+      cardTwo: { rank: rank, suit: suitTwo }
+    };
+    // set new state with new cards, reset firstPick and added matchedCards
+    this.setState({cards: newCards, firstPick: null, matchedCards: [...this.state.matchedCards, matchedPair]});
+  }
+
+  clickCard(rank, suit) {
+
+    // this is the first card clicked
     if (this.state.firstPick === null) {
-      console.log(`this is the first card clicked`);
-      this.setState({firstPick:{
-        rank: rank,
-        suit: suit
-      }});
-    }else if (this.state.firstPick.rank === rank) {
-      // hide those cards and reset first pick
-      console.log(`ranks are equal: ${rank}`);
-      this.removeMatched(rank, this.state.firstPick.suit, suit);
-    }else{
+      this.setState({firstPick:{ rank: rank, suit: suit }});
+    }
+    // a second card was clicked and it has the same rank as the previous
+    else if (this.state.firstPick.rank === rank) {
+      // hide those cards, add to matchedCards and reset first pick
+      this.hideAndAddMatched(rank, this.state.firstPick.suit, suit);
+    }
+    // a second card was clicked, but no match
+    else{
       // reset first pick
-      console.log(`ranks are not equal: ${rank}`);
       this.setState({firstPick: null});
     }
   }
+
+  shuffleArray(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
   makeDeck() {
-    console.log(`WE ARE MAKING A DECK`);
     const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
     const suits = ['S', 'H', 'C', 'D'];
-    const cards = []
-    const className = '';
+    const cards = [];
     for (var rank of ranks) {
       for (var suit of suits) {
         cards.push({
           rank: rank,
           suit: suit,
           isMatched: false,
-          className: className
+          className: ''
         });
       }
     }
-    return cards;
+    // randomize placement of cards on board
+    return this.shuffleArray(cards);
 
   }
   render() {
     console.log(`first pick is now: ${this.state.firstPick === null ? this.state.firstPick : this.state.firstPick.rank}`);
-    // this.makeDeck();
+    console.log(`matched pairs is: ${this.state.matchedCards}`);
+    console.log(`matched pairs count is: ${this.state.matchedCards.length}`);
+    console.log('**************');
     return (
       <div className="App">
         <Board cards={this.state.cards} onClick={(rank, suit) => this.clickCard(rank, suit)}/>
