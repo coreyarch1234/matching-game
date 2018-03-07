@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from './board';
+import SideBar from './sideBar';
 
 //Hold an array of 52 card objects
 export default class Game extends Component {
@@ -92,7 +93,8 @@ export default class Game extends Component {
       }
     }
     // randomize placement of cards on board
-    return this.shuffleArray(cards);
+    // return this.shuffleArray(cards);
+    return cards;
 
   }
   render() {
@@ -101,9 +103,19 @@ export default class Game extends Component {
     console.log(`matched pairs count is: ${this.state.matchedCards.length}`);
     console.log('**************');
     return (
-      <div className="App">
+      <div className="App" style={styles.gameContainer}>
+        <SideBar pairs={this.state.matchedCards}/>
         <Board cards={this.state.cards} onClick={(rank, suit) => this.clickCard(rank, suit)}/>
       </div>
     );
   }
+}
+
+const styles = {
+  gameContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
 }
