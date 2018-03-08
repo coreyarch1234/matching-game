@@ -45,18 +45,45 @@ export default class Game extends Component {
 
     // this is the first card clicked
     if (this.state.firstPick === null) {
-      this.setState({firstPick:{ rank: rank, suit: suit }});
+      // add selected class to this firstpick
+      const newCards = this.addClassToCard(rank, suit, 'selected', false);
+      this.setState({cards: newCards, firstPick:{ rank: rank, suit: suit }});
     }
     // a second card was clicked and it has the same rank as the previous
-    else if (this.state.firstPick.rank === rank) {
+    else if (this.state.firstPick.rank === rank && this.state.firstPick.suit !== suit) {
       // hide those cards, add to matchedCards and reset first pick
       this.hideAndAddMatched(rank, this.state.firstPick.suit, suit);
     }
     // a second card was clicked, but no match
     else{
-      // reset first pick
-      this.setState({firstPick: null});
+      // remove selected from firstPick
+      // show and then hide second card if they do not match
+      const newCards = this.addClassToCard(rank, suit, 'notMatched ', true);
+      this.setState({cards: newCards, firstPick: null}); // reset firstPick object
     }
+  }
+
+  addClassToCard(rank, suit, className, resetFirstPick) {
+    const newCards = this.state.cards.filter((cardObject, index) => {
+      const cardRank = cardObject.rank;
+      const cardSuit = cardObject.suit;
+      // get rid of notMatched class
+      if (cardObject.className.includes('notMatched ')) {
+        cardObject.className = `cardOverlay`;
+      }
+      // if cards match, add that className
+      if (cardRank === rank && cardSuit === suit){
+        cardObject.className = `cardOverlay ${className}`;
+        return cardObject;
+      }
+      // if cards do not match, resetFirstPick will be true and this will remove selected class from firstPick
+      if (resetFirstPick === true && cardRank === this.state.firstPick.rank && cardSuit === this.state.firstPick.suit) {
+        cardObject.className = `cardOverlay`;
+        return cardObject;
+      }
+      return cardObject;
+    });
+    return newCards;
   }
 
   shuffleArray(array) {
@@ -88,34 +115,20 @@ export default class Game extends Component {
           rank: rank,
           suit: suit,
           isMatched: false,
-          className: ''
+          className: 'cardOverlay'
         });
       }
     }
     // randomize placement of cards on board
-    // return this.shuffleArray(cards);
-    return cards;
+    return this.shuffleArray(cards);
 
   }
   render() {
-    console.log(`first pick is now: ${this.state.firstPick === null ? this.state.firstPick : this.state.firstPick.rank}`);
-    console.log(`matched pairs is: ${this.state.matchedCards}`);
-    console.log(`matched pairs count is: ${this.state.matchedCards.length}`);
-    console.log('**************');
     return (
-      <div className="App" style={styles.gameContainer}>
+      <div className='gameContainer'>
         <SideBar pairs={this.state.matchedCards}/>
         <Board cards={this.state.cards} onClick={(rank, suit) => this.clickCard(rank, suit)}/>
       </div>
     );
   }
-}
-
-const styles = {
-  gameContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start'
-  },
 }

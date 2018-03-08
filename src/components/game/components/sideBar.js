@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import Card from 'react-playing-card';
 
-//Card component with suit and value
+// Sidebar component lists the matched pairs along with the count
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-
-    }
   }
 
   mapCards() {
@@ -30,7 +26,6 @@ export default class SideBar extends Component {
     });
   }
   render() {
-    console.log(this.mapCards());
     return (
       <div className='sideBar'>
         <h3 style={{textAlign: 'center'}}>{this.props.pairs.length} Matched Pairs</h3>
