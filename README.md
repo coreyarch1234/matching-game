@@ -5,3 +5,8 @@
 - Clone repo
 - npm install --save
 - npm start
+
+or
+
+You can play it live at:
+https://boiling-retreat-80978.herokuapp.com/
