@@ -12,8 +12,8 @@
 
 .cardOverlay {
    filter: brightness(0);
-   width: 180px;
-   height: 250px;
+   width: 120px;
+   height: 190px;
    background: #CCC5B3;
    margin: 0px auto;
    border-radius: 12px;
@@ -26,8 +26,8 @@
    animation: fadeInCard 0s forwards;
 }
 .card {
-   width: 180px;
-   height: 250px;
+   width: 120px;
+   height: 190px;
    background: #CCC5B3;
    margin: 0px auto;
    border-radius: 12px;
@@ -71,8 +71,8 @@
 
 .cardOverlay.selected {
   filter: brightness(1) !important;
-  width: 180px;
-  height: 250px;
+  width: 120px;
+  height: 190px;
   animation-name: showCard;
   animation-duration: .5s;
   background: #CCC5B3;
@@ -100,8 +100,8 @@
   animation-name: hideCard;
   animation-duration: .5s;
   box-shadow: 0 0 10px #f00;
-  width: 180px;
-  height: 250px;
+  width: 120px;
+  height: 190px;
   background: #CCC5B3;
   margin: 0px auto;
   border-radius: 12px;
