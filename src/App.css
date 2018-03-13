@@ -58,6 +58,7 @@
 
   to {
     filter: brightness(1);
+    box-shadow: 5px 5px 5px blue;
   }
 }
 
@@ -78,11 +79,14 @@
 }
 
 @keyframes hideCard {
-  from {
+  0% {
     filter: brightness(1);
   }
-
-  to {
+  65% {
+    filter: brightness(1);
+    box-shadow: 5px 5px 5px red;
+  }
+  100% {
     filter: brightness(0);
   }
 }
@@ -90,8 +94,7 @@
 .cardOverlay.notMatched {
   filter: brightness(1) !important;
   animation-name: hideCard;
-  animation-duration: 3s;
-  box-shadow: 0 0 10px #f00;
+  animation-duration: 2.5s;
   width: 120px;
   height: 190px;
   background: #CCC5B3;
