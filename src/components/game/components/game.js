@@ -42,24 +42,25 @@ export default class Game extends Component {
   }
 
   clickCard(rank, suit) {
-
+    const firstPick = this.state.firstPick;
     // this is the first card clicked
-    if (this.state.firstPick === null) {
+    if (firstPick === null) {
       // add selected class to this firstpick
       const newCards = this.addClassToCard(rank, suit, 'selected', false);
       this.setState({cards: newCards, firstPick:{ rank: rank, suit: suit }});
     }
     // a second card was clicked and it has the same rank as the previous
-    else if (this.state.firstPick.rank === rank && this.state.firstPick.suit !== suit) {
-      // hide those cards, add to matchedCards and reset first pick
-      this.hideAndAddMatched(rank, this.state.firstPick.suit, suit);
+    else if (firstPick.rank === rank) {
+      if (firstPick.suit !== suit) {
+        // hide those cards, add to matchedCards and reset first pick
+        this.hideAndAddMatched(rank, firstPick.suit, suit);
+      }
     }
     // a second card was clicked, but no match
     else{
-      // remove selected from firstPick
-      // show and then hide second card if they do not match
+      // show and then hide second card if they do not match and reset firstPick object
       const newCards = this.addClassToCard(rank, suit, 'notMatched ', true);
-      this.setState({cards: newCards, firstPick: null}); // reset firstPick object
+      this.setState({cards: newCards, firstPick: null});
     }
   }
 
@@ -67,8 +68,9 @@ export default class Game extends Component {
     const newCards = this.state.cards.filter((cardObject, index) => {
       const cardRank = cardObject.rank;
       const cardSuit = cardObject.suit;
+      const cardClass = cardObject.className;
       // get rid of notMatched class
-      if (cardObject.className.includes('notMatched ')) {
+      if (cardClass.includes('notMatched ')) {
         cardObject.className = `cardOverlay`;
       }
       // if cards match, add that className
@@ -88,10 +90,8 @@ export default class Game extends Component {
 
   shuffleArray(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
@@ -101,7 +101,6 @@ export default class Game extends Component {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-
     return array;
   }
 
